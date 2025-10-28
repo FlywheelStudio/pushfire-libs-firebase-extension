@@ -1,15 +1,19 @@
-import type { Response } from "express";
-import { Request, onRequest } from "firebase-functions/https";
+import { defineString } from "firebase-functions/params";
+import { onDocumentUpdated } from "firebase-functions/v2/firestore";
 
-export const syncSubscriber = onRequest((req: Request, res: Response) => {
-  res.send({
-    message: "Subscriber synced",
-    timestamp: new Date().toISOString(),
-    request: {
-      method: req.method,
-      url: req.url,
-      headers: req.headers,
-      body: req.body,
-    },
-  });
-});
+const SUBSCRIBER_COLLECTION = defineString("SUBSCRIBER_COLLECTION", { default: "users" }).value();
+
+export const syncSubscriber = onDocumentUpdated(
+  {
+    document: `${SUBSCRIBER_COLLECTION}/{subscriberId}`,
+  },
+  async (event) => {
+    const subscriberId = event.params.subscriberId;
+    try {
+      return { success: true, result: { subscriberId } };
+    } catch (error) {
+      console.error(`Error syncing subscriber ${subscriberId} to Pushfire:`, error);
+      throw error;
+    }
+  }
+);
