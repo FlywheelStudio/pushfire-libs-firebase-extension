@@ -5,7 +5,7 @@ specVersion: v1beta
 displayName: Pushfire Subscribers Sync
 description: Syncs subscribers existing in Pushfire to Firestore.
 
-icon: ./icon.png
+icon: icon.png
 
 author:
   authorName: Pushfire
