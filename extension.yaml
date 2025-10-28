@@ -3,31 +3,47 @@ version: 0.0.1
 specVersion: v1beta  
 
 displayName: Pushfire Subscribers Sync
-
 description: Syncs subscribers existing in Pushfire to Firestore.
 
-sourceUrl: hhttps://github.com/FlywheelStudio/pushfire-libs-firebase-extension
+icon: icon.png
+
+author:
+  authorName: Pushfire
+  url: https://pushfire.app
+
+
+sourceUrl: https://github.com/FlywheelStudio/pushfire-libs-firebase-extension
 billingRequired: false
+
+license: Apache-2.0
+
+roles:
+  - role: firestore.stdout
+    reason: Allows the extension to read from Firestore.
 
 resources:
   - name: syncSubscriber
     type: firebaseextensions.v1beta.function
-    description: HTTP request-triggered function that syncs subscribers existing in Pushfire to Firestore.
+    description: Syncs subscribers to external API when updated in Firestore.
     properties:
-      httpsTrigger: {}
+      eventTrigger: 
+        eventType: providers/cloud.firestore/eventTypes/document.update
+        resource: "projects/{PROJECT_ID}/databases/(default)/documents/${param:SUBSCRIBER_COLLECTION}/{subscriberId}"
       runtime: "nodejs22"
       source: "functions"
 
 params:
-  - name: PUSHFIRE_API_KEY
-    label: Pushfire API Key
-    description: The API key for the Pushfire project.
+  - name: PUSHFIRE_API_TOKEN
+    label: Pushfire API Token
+    description: The API token for the Pushfire project.
+    type: secret
+    required: true
+    immutable: false
+
+  - name: SUBSCRIBER_COLLECTION
+    label: Subscriber Name Collection
+    description: The collection name for the subscribers in Firestore.
     type: string
     required: true
     immutable: false
-  - name: PUSHFIRE_PROJECT_ID
-    label: Pushfire Project ID
-    description: The project ID for the Pushfire project.
-    type: string
-    required: true
-    immutable: false
+    default: users
