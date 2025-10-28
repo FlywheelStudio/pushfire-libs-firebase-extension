@@ -1,0 +1,54 @@
+[debug] [2025-10-28T18:22:53.572Z] ----------------------------------------------------------------------
+[debug] [2025-10-28T18:22:53.574Z] Command:       /home/endev/.nvm/versions/node/v22.13.0/bin/node /home/endev/.local/share/pnpm/global/5/.pnpm/firebase-tools@14.22.0_@types+node@24.9.1_encoding@0.1.13_typescript@5.9.3/node_modules/firebase-tools/lib/bin/firebase.js emulators:start --project=demo-pushfire
+[debug] [2025-10-28T18:22:53.574Z] CLI Version:   14.22.0
+[debug] [2025-10-28T18:22:53.574Z] Platform:      linux
+[debug] [2025-10-28T18:22:53.574Z] Node Version:  v22.13.0
+[debug] [2025-10-28T18:22:53.575Z] Time:          Tue Oct 28 2025 15:22:53 GMT-0300 (Argentina Standard Time)
+[debug] [2025-10-28T18:22:53.575Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-10-28T18:22:53.775Z] Object "/extensions" in "firebase.json" has unknown property: {"additionalProperty":"pushfire-subscribers-sync"}
+[debug] [2025-10-28T18:22:53.780Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-10-28T18:22:53.780Z] > authorizing via signed-in user (ender@flywheel.so)
+[info] i  emulators: Starting emulators: functions, extensions {"metadata":{"emulator":{"name":"hub"},"message":"Starting emulators: functions, extensions"}}
+[info] i  emulators: Detected demo project ID "demo-pushfire", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail. {"metadata":{"emulator":{"name":"hub"},"message":"Detected demo project ID \"demo-pushfire\", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail."}}
+[debug] [2025-10-28T18:22:53.785Z] Successfully read params from pushfire-subscribers-sync.env
+[debug] [2025-10-28T18:22:53.785Z] Error: ENOENT: no such file or directory, open '/home/endev/Dev/work/flywheel/projects/pushfire/libs/firebase-extension/functions/integration-tests/extensions/pushfire-subscribers-sync.env.0'
+[debug] [2025-10-28T18:22:53.785Z] Error: ENOENT: no such file or directory, open '/home/endev/Dev/work/flywheel/projects/pushfire/libs/firebase-extension/functions/integration-tests/extensions/pushfire-subscribers-sync.env.demo-pushfire'
+[debug] [2025-10-28T18:22:53.785Z] Error: ENOENT: no such file or directory, open '/home/endev/Dev/work/flywheel/projects/pushfire/libs/firebase-extension/functions/integration-tests/extensions/pushfire-subscribers-sync.env.local'
+[debug] [2025-10-28T18:22:53.809Z] [extensions] Source code valid for ../..
+[warn] ⚠  Function 'syncSubscriber' is missing a trigger in extension.yaml. Please add one, as triggers defined in code are ignored. {"metadata":{"emulator":{"name":"functions"},"message":"Function 'syncSubscriber' is missing a trigger in extension.yaml. Please add one, as triggers defined in code are ignored."}}
+[debug] [2025-10-28T18:22:53.816Z] assigned listening specs for emulators {"user":{"functions":[{"address":"127.0.0.1","family":"IPv4","port":5001}],"eventarc":[{"address":"127.0.0.1","family":"IPv4","port":9299}],"tasks":[{"address":"127.0.0.1","family":"IPv4","port":9499}],"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}]},"metadata":{"message":"assigned listening specs for emulators"}}
+[debug] [2025-10-28T18:22:53.823Z] Emulator locator file path: /tmp/hub-demo-pushfire.json
+[warn] ⚠  emulators: It seems that you are running multiple instances of the emulator suite for project demo-pushfire. This may result in unexpected behavior. 
+[debug] [2025-10-28T18:22:53.824Z] [hub] writing locator at /tmp/hub-demo-pushfire.json
+[error] ⬢  functions: Failed to start Functions emulator: No valid functions configuration detected in firebase.json {"metadata":{"emulator":{"name":"functions"},"message":"Failed to start Functions emulator: No valid functions configuration detected in firebase.json"}}
+[debug] [2025-10-28T18:22:53.831Z] [Extensions] Started Extensions emulator, this is a noop.
+[debug] [2025-10-28T18:22:53.845Z] defaultcredentials: writing to file /home/endev/.config/firebase/ender_flywheel_so_application_default_credentials.json
+[debug] [2025-10-28T18:22:53.850Z] Setting GAC to /home/endev/.config/firebase/ender_flywheel_so_application_default_credentials.json {"metadata":{"emulator":{"name":"functions"},"message":"Setting GAC to /home/endev/.config/firebase/ender_flywheel_so_application_default_credentials.json"}}
+[debug] [2025-10-28T18:22:53.868Z] [Extensions] Connecting Extensions emulator, this is a noop.
+[info] i  functions: Watching "/home/endev/Dev/work/flywheel/projects/pushfire/libs/firebase-extension/functions" for Cloud Functions... {"metadata":{"emulator":{"name":"functions"},"message":"Watching \"/home/endev/Dev/work/flywheel/projects/pushfire/libs/firebase-extension/functions\" for Cloud Functions..."}}
+[info] ✔  functions: Loaded functions definitions from source: syncSubscriber. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: syncSubscriber."}}
+[info] ✔  functions[us-central1-ext-pushfire-subscribers-sync-syncSubscriber]: http function initialized (http://127.0.0.1:5001/demo-pushfire/us-central1/ext-pushfire-subscribers-sync-syncSubscriber). {"metadata":{"emulator":{"name":"functions"},"message":"\u001b[1mhttp\u001b[22m function initialized (http://127.0.0.1:5001/demo-pushfire/us-central1/ext-pushfire-subscribers-sync-syncSubscriber)."}}
+[debug] [2025-10-28T18:22:53.878Z] Could not find VSCode notification endpoint: FetchError: request to http://localhost:40001/vscode/notify failed, reason: connect ECONNREFUSED 127.0.0.1:40001. If you are not running the Firebase Data Connect VSCode extension, this is expected and not an issue.
+[info] 
+┌─────────────────────────────────────────────────────────────┐
+│ ✔  All emulators ready! It is now safe to connect your app. │
+│ i  View Emulator UI at http://127.0.0.1:4000/               │
+└─────────────────────────────────────────────────────────────┘
+
+┌────────────┬────────────────┬──────────────────────────────────┐
+│ Emulator   │ Host:Port      │ View in Emulator UI              │
+├────────────┼────────────────┼──────────────────────────────────┤
+│ Functions  │ 127.0.0.1:5001 │ http://127.0.0.1:4000/functions  │
+├────────────┼────────────────┼──────────────────────────────────┤
+│ Extensions │ 127.0.0.1:5001 │ http://127.0.0.1:4000/extensions │
+└────────────┴────────────────┴──────────────────────────────────┘
+  Emulator Hub host: 127.0.0.1 port: 4400
+  Other reserved ports: 4500
+┌───────────────────────────┬─────────────────┬────────────────────────────────────────────────────────────┐
+│ Extension Instance Name   │ Extension Ref   │ View in Emulator UI                                        │
+├───────────────────────────┼─────────────────┼────────────────────────────────────────────────────────────┤
+│ pushfire-subscribers-sync │ Local Extension │ http://127.0.0.1:4000/extensions/pushfire-subscribers-sync │
+└───────────────────────────┴─────────────────┴────────────────────────────────────────────────────────────┘
+Issues? Report them at https://github.com/firebase/firebase-tools/issues and attach the *-debug.log files.
+ 

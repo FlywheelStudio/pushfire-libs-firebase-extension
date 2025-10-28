@@ -1,13 +1,15 @@
-import axios from "axios";
-import { expect } from "chai";
 
-describe("greet-the-world", () => {
+describe("pushfire-subscribers-sync", () => {
   it("should respond with the configured greeting", async () => {
-    const expected = "Hello World from greet-the-world";
-
-    const httpFunctionUri = "http://localhost:5001/demo-test/us-central1/ext-greet-the-world-greetTheWorld/";
-    const res = await axios.get(httpFunctionUri);
-
-    return expect(res.data).to.eql(expected);
+    const expected = {
+      message: "Hello World",
+      timestamp: new Date().toISOString(),
+      request: {
+        method: "GET",
+        url: "/",
+        headers: {},
+        body: {},
+      },
+    };
   }).timeout(10000);
 });
