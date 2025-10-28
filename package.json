@@ -7,7 +7,11 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Pushfire a product of Flywheel Studio, Ender Puentes <ender@flywheel.so>",
   "license": "ISC",
+  "private": true,
+  "engines": {
+    "node": "22"
+  },
   "packageManager": "pnpm@10.15.1"
 }
