@@ -1,4 +1,3 @@
-
 describe("pushfire-subscribers-sync", () => {
   it("should respond with the configured greeting", async () => {
     const expected = {
