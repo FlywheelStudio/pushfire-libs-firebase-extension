@@ -8,8 +8,13 @@ description: Syncs subscribers existing in Pushfire to Firestore.
 icon: icon.png
 
 author:
-  authorName: Pushfire
+  authorName: Pushfire a product of Flywheel Studio
   url: https://pushfire.app
+
+contributors:
+  - authorName: Ender Puentes
+    email: ender@flywheel.so
+    url: https://github.com/enderpuentes
 
 sourceUrl: https://github.com/FlywheelStudio/pushfire-libs-firebase-extension
 billingRequired: false
