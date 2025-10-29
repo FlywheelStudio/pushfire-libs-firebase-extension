@@ -3,12 +3,12 @@ version: 0.0.1
 specVersion: v1beta
 
 displayName: Pushfire Subscribers Sync
-description: Syncs subscribers existing in Pushfire to Firestore.
+description: Syncs subscribers from Pushfire to Firestore.
 
 icon: icon.png
 
 author:
-  authorName: Pushfire a product of Flywheel Studio
+  authorName: Pushfire, a product of Flywheel Studio
   url: https://pushfire.app
 
 contributors:
@@ -28,7 +28,7 @@ roles:
 resources:
   - name: updateSubscriber
     type: firebaseextensions.v1beta.function
-    description: Updates a subscriber in Pushfire when updated in Firestore.
+    description: Updates a subscriber in Pushfire when their Firestore document is updated.
     properties:
       location: ${param:LOCATION}
       eventTrigger:
@@ -40,7 +40,7 @@ resources:
 params:
   - param: LOCATION
     label: Cloud Functions location
-    description: Where do you want to deploy the functions created for this extension? For help selecting a location, refer to the location selection guide (https://firebase.google.com/docs/functions/locations).
+    description: Select where you want to deploy Cloud Functions created by this extension. For help with locations, see the location selection guide (https://firebase.google.com/docs/functions/locations).
     type: select
     options:
       - label: Iowa (us-central1)
@@ -91,58 +91,29 @@ params:
 
   - param: PROJECT_ID
     label: Project ID
-    description: The ID of the Firebase project.
+    description: Your Firebase project ID.
     type: string
     required: true
     immutable: false
 
   - param: PROJECT_TOKEN
     label: Project Token
-    description: The API token for the Pushfire project.
+    description: The API token for your Pushfire project.
     type: string
     required: true
     immutable: false
 
   - param: MATCHING_COLLECTION_FOR_SUBSCRIBER
-    label: Matching Collection for Subscriber
-    description: The name of the Firestore collection that contains the subscribers to match.
+    label: Subscriber Collection Name
+    description: The name of the Firestore collection that contains the subscriber documents.
     type: string
     required: true
     immutable: false
 
-  - param: MATCHING_FIELD_FOR_SUBSCRIBER_EXTERNAL_ID
-    label: Matching Field for Subscriber External ID
-    description: The field in the Firestore collection that matches the external identifier of the subscriber.
+  - param: MATCHING_FIELDS_FOR_SUBSCRIBER
+    label: Matching Fields for Subscriber
+    description: >
+      Define how Firestore subscriber documents map to PushFire subscriber fields. 👉 **To generate your configuration JSON**, visit: [PushFire Config Generator](https://pushfire.app/integrations/firebase/generator-configuration) 👉 **Once you finish, copy the generated JSON and paste it here.**
     type: string
     required: true
     immutable: false
-
-  - param: MATCHING_FIELD_FOR_SUBSCRIBER_NAME
-    label: Matching Field for Subscriber Name
-    description: The field in the Firestore collection that matches the name of the subscriber.
-    type: string
-    required: true
-    immutable: false
-
-  - param: MATCHING_FIELD_FOR_SUBSCRIBER_EMAIL
-    label: Matching Field for Subscriber Email
-    description: The field in the Firestore collection that matches the email of the subscriber.
-    type: string
-    required: false
-    immutable: false
-
-  - param: MATCHING_FIELD_FOR_SUBSCRIBER_PHONE
-    label: Matching Field for Subscriber Phone
-    description: The field in the Firestore collection that matches the phone number of the subscriber.
-    type: string
-    required: false
-    immutable: false
-
-  - param: MATCHING_FIELD_FOR_SUBSCRIBER_METADATA
-    label: Matching Field for Subscriber Metadata
-    description: Additional subscriber metadata in JSON format.
-    type: string
-    required: false
-    immutable: false
-    validationRegex: '^(\{.*\})?$'
-    validationErrorMessage: Must be a valid JSON object.
