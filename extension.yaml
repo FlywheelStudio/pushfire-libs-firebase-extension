@@ -30,90 +30,39 @@ resources:
     type: firebaseextensions.v1beta.function
     description: Updates a subscriber in Pushfire when their Firestore document is updated.
     properties:
-      location: ${param:LOCATION}
       eventTrigger:
         eventType: providers/cloud.firestore/eventTypes/document.update
-        resource: "projects/{PROJECT_ID}/databases/(default)/documents/${param:MATCHING_COLLECTION_FOR_SUBSCRIBER}/{subscriberId}"
+        resource: "projects/{PROJECT_ID}/databases/(default)/documents/${param:PUSHFIRE_MATCHING_COLLECTION}/{documentId}"
       runtime: nodejs22
       source: functions
 
 params:
-  - param: LOCATION
-    label: Cloud Functions location
-    description: Select where you want to deploy Cloud Functions created by this extension. For help with locations, see the location selection guide (https://firebase.google.com/docs/functions/locations).
-    type: select
-    options:
-      - label: Iowa (us-central1)
-        value: us-central1
-      - label: South Carolina (us-east1)
-        value: us-east1
-      - label: Northern Virginia (us-east4)
-        value: us-east4
-      - label: Los Angeles (us-west2)
-        value: us-west2
-      - label: Salt Lake City (us-west3)
-        value: us-west3
-      - label: Las Vegas (us-west4)
-        value: us-west4
-      - label: Belgium (europe-west1)
-        value: europe-west1
-      - label: London (europe-west2)
-        value: europe-west2
-      - label: Frankfurt (europe-west3)
-        value: europe-west3
-      - label: Zurich (europe-west6)
-        value: europe-west6
-      - label: Taiwan (asia-east1)
-        value: asia-east1
-      - label: Hong Kong (asia-east2)
-        value: asia-east2
-      - label: Tokyo (asia-northeast1)
-        value: asia-northeast1
-      - label: Osaka (asia-northeast2)
-        value: asia-northeast2
-      - label: Seoul (asia-northeast3)
-        value: asia-northeast3
-      - label: Mumbai (asia-south1)
-        value: asia-south1
-      - label: Singapore (asia-southeast1)
-        value: asia-southeast1
-      - label: Jakarta (asia-southeast2)
-        value: asia-southeast2
-      - label: Montreal (northamerica-northeast1)
-        value: northamerica-northeast1
-      - label: Sao Paulo (southamerica-east1)
-        value: southamerica-east1
-      - label: Sydney (australia-southeast1)
-        value: australia-southeast1
-    default: us-central1
+  - param: PUSHFIRE_PROJECT_ID
+    label: Pushfire Project ID
+    description: The ID of the Pushfire project to sync subscribers from.
+    type: string
     required: true
     immutable: true
 
-  - param: PROJECT_ID
-    label: Project ID
-    description: Your Firebase project ID.
-    type: string
-    required: true
-    immutable: false
-
-  - param: PROJECT_TOKEN
-    label: Project Token
+  - param: PUSHFIRE_PROJECT_TOKEN
+    label: Pushfire Project Token
     description: The API token for your Pushfire project.
     type: string
     required: true
-    immutable: false
+    immutable: true
 
-  - param: MATCHING_COLLECTION_FOR_SUBSCRIBER
-    label: Subscriber Collection Name
+  - param: PUSHFIRE_MATCHING_COLLECTION
+    label: Matching collection name
     description: The name of the Firestore collection that contains the subscriber documents.
     type: string
     required: true
     immutable: false
 
-  - param: MATCHING_FIELDS_FOR_SUBSCRIBER
-    label: Matching Fields for Subscriber
+  - param: PUSHFIRE_MATCHING_TOKEN_JSON_SCHEMA_CONFIGURATION
+    label: Matching JSON Schema Configuration
     description: >
-      Define how Firestore subscriber documents map to PushFire subscriber fields. 👉 **To generate your configuration JSON**, visit: [PushFire Config Generator](https://pushfire.app/integrations/firebase/generator-configuration) 👉 **Once you finish, copy the generated JSON and paste it here.**
+      **⚠️IMPORTANT:** Use the [PushFire Schema Builder](https://pushfire.app/extensions/firebase/schema-builder) to create your field mapping. Copy the JSON configuration it generates and paste it here. 
+      This configuration allows you to map your Firestore fields to Pushfire fields. The URL above makes it easy to configure, preview, and generate the required mapping JSON.
     type: string
     required: true
     immutable: false
