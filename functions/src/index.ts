@@ -5,75 +5,77 @@
  * subscriber data with Pushfire using configurable field mapping.
  */
 
+import { FirestoreDocumentData } from "@/types/firestore.types";
 import { onDocumentUpdated } from "firebase-functions/v2/firestore";
-import {
-  mapSubscriberData,
-  parseMappingConfiguration,
-} from "./services/firestore/mapping";
-import {
-  isRawFirestoreEvent,
-  parseFirestoreDocument,
-} from "./services/firestore/parser";
-import { Pushfire, PushfireError } from "./services/pushfire/client";
-import { FirestoreDocumentData } from "./types/mapping.types";
+import { FirestoreMapper } from "./services/firestore/mapping";
+import { FirestoreParser } from "./services/firestore/parser";
+import { PushfireClient, PushfireError } from "./services/pushfire/client";
+import { logger } from "./utils/log/logger";
 
 /**
- * Response structure for the Cloud Function
+ * Response structure returned by the Cloud Function.
  */
 interface FunctionResponse {
+  /** Indicates whether the operation succeeded */
   success: boolean;
+  /** Result data when operation succeeds */
   result?: {
     message?: string;
   };
+  /** Error message when operation fails */
   error?: string;
 }
 
 /**
- * Firebase Cloud Function that triggers on subscriber document updates
+ * Firebase Cloud Function that triggers on Firestore subscriber document updates.
  *
- * Environment Variables Required:
- * - MATCHING_COLLECTION_FOR_SUBSCRIBER: Firestore collection path for subscribers
- * - PUSHFIRE_MATCHING_TOKEN_JSON_SCHEMA_CONFIGURATION: JSON configuration for field mapping
+ * Synchronizes subscriber data with Pushfire API using configurable field mapping.
+ *
+ * **Required Environment Variables:**
+ * - `MATCHING_COLLECTION_FOR_SUBSCRIBER`: Firestore collection path for subscribers
+ * - `PUSHFIRE_MATCHING_TOKEN_JSON_SCHEMA_CONFIGURATION`: JSON field mapping configuration
+ *
+ * @returns Promise resolving to function response with success status
  */
 export const updateSubscriber = onDocumentUpdated(
   {
     document: `${process.env.MATCHING_COLLECTION_FOR_SUBSCRIBER}/{documentId}`,
   },
   async (event: any): Promise<FunctionResponse> => {
-    console.log("Processing subscriber update...");
+    logger.info("Processing subscriber update");
+
+    const parser = new FirestoreParser();
+    const mapper = new FirestoreMapper();
+    const pushfireClient = new PushfireClient();
 
     try {
-      // Validate required environment variables
       if (!process.env.PUSHFIRE_MATCHING_TOKEN_JSON_SCHEMA_CONFIGURATION) {
         throw new Error(
           "Missing required environment variable: PUSHFIRE_MATCHING_TOKEN_JSON_SCHEMA_CONFIGURATION"
         );
       }
 
-      console.log("Raw event:", JSON.stringify(event, null, 2));
+      logger.info("Raw event", JSON.stringify(event, null, 2));
 
-      // Check if event is in raw Firestore format (Firebase Extensions)
       let documentData: FirestoreDocumentData;
 
-      if (isRawFirestoreEvent(event)) {
-        // Handle raw Firestore format from Firebase Extensions
+      if (parser.isRawEvent(event)) {
         if (!event.value) {
-          console.error("No value found in event");
+          logger.error("No value found in event");
           return {
             success: false,
             error: "No document data in event",
           };
         }
 
-        documentData = parseFirestoreDocument(event.value);
-        console.log(
-          "Parsed document data:",
+        documentData = parser.parseDocument(event.value);
+        logger.info(
+          "Parsed document data",
           JSON.stringify(documentData, null, 2)
         );
       } else if (event.data) {
-        // Handle processed format from standard Functions
         if (!event.data.after.exists) {
-          console.log("Document was deleted, skipping update");
+          logger.info("Document was deleted, skipping update");
           return {
             success: true,
             result: { message: "Document deleted, no action needed" },
@@ -81,8 +83,8 @@ export const updateSubscriber = onDocumentUpdated(
         }
 
         documentData = event.data.after.data() as FirestoreDocumentData;
-        console.log(
-          "Document data extracted:",
+        logger.info(
+          "Document data extracted",
           JSON.stringify(documentData, null, 2)
         );
       } else {
@@ -93,34 +95,33 @@ export const updateSubscriber = onDocumentUpdated(
         throw new Error("Failed to parse or extract document data");
       }
 
-      // Parse mapping configuration
-      const mappingConfiguration = parseMappingConfiguration(
+      const mappingConfiguration = mapper.parseConfiguration(
         process.env.PUSHFIRE_MATCHING_TOKEN_JSON_SCHEMA_CONFIGURATION
       );
 
-      // Map document data to Pushfire format
-      const mappedData = mapSubscriberData(documentData, mappingConfiguration);
-      console.log(
+      const mappedData = mapper.mapSubscriberData(
+        documentData,
+        mappingConfiguration
+      );
+      logger.success(
         "Document data mapped successfully",
         JSON.stringify(mappedData, null, 2)
       );
 
-      // Send mapped data to Pushfire API
-      const pushfire = new Pushfire();
-      const response = await pushfire.updateSubscriber(mappedData);
+      const response = await pushfireClient.updateSubscriber({
+        data: mappedData,
+      });
 
-      console.log("Subscriber updated successfully in Pushfire");
+      logger.success("Subscriber updated successfully in Pushfire");
       return {
         success: true,
         result: { message: response.message },
       };
     } catch (error) {
-      // Handle specific error types
       if (error instanceof PushfireError) {
-        console.error("Pushfire API error updating subscriber:", {
+        logger.error("Pushfire API error updating subscriber", {
           message: error.message,
           statusCode: error.statusCode,
-          details: error.details,
         });
         return {
           success: false,
@@ -128,10 +129,9 @@ export const updateSubscriber = onDocumentUpdated(
         };
       }
 
-      // Handle generic errors
       const errorMessage =
         error instanceof Error ? error.message : "Unknown error occurred";
-      console.error("Error updating subscriber in Pushfire:", error);
+      logger.error("Error updating subscriber in Pushfire", error);
 
       return {
         success: false,
