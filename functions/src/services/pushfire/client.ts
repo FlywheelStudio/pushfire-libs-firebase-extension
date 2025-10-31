@@ -8,6 +8,7 @@ import {
   PushfireSuccessResponse,
   SubscriberUpdateRequest,
 } from "@/types/pushfire.types";
+import { logger } from "@/utils/log/logger";
 
 /**
  * Custom error class for Pushfire API operations.
@@ -99,10 +100,43 @@ export class PushfireClient {
       clearTimeout(timeoutId);
 
       if (!response.ok) {
-        const errorData = (await response.json()) as PushfireErrorResponse;
-        const errorMessage = errorData.details
-          ? `${errorData.error}: ${errorData.details}`
-          : errorData.error || "Failed to update subscriber";
+        let errorData: PushfireErrorResponse;
+        let rawResponse: string = "";
+
+        try {
+          rawResponse = await response.text();
+          errorData = JSON.parse(rawResponse) as PushfireErrorResponse;
+        } catch (parseError) {
+          // If response is not valid JSON, use raw text as error message
+          logger.error("Pushfire API error response (non-JSON)", {
+            statusCode: response.status,
+            rawResponse: rawResponse || "Unable to read response",
+          });
+          throw new PushfireError(
+            `API returned ${response.status}: ${rawResponse || "Unknown error"}`,
+            response.status
+          );
+        }
+
+        // Log the complete error response for debugging
+        logger.error("Pushfire API error response", {
+          statusCode: response.status,
+          errorData: JSON.stringify(errorData, null, 2),
+        });
+
+        // Build error message from validation errors if present
+        let errorMessage: string;
+        if (errorData.errors && errorData.errors.length > 0) {
+          const validationErrors = errorData.errors
+            .map((err) => `${err.path}: ${err.message}`)
+            .join("; ");
+          errorMessage = `Validation errors: ${validationErrors}`;
+        } else if (errorData.details) {
+          errorMessage = `${errorData.error || "Error"}: ${errorData.details}`;
+        } else {
+          errorMessage = errorData.error || "Failed to update subscriber";
+        }
+
         throw new PushfireError(errorMessage, response.status);
       }
 
