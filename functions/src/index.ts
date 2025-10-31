@@ -5,12 +5,12 @@
  * subscriber data with Pushfire using configurable field mapping.
  */
 
-import { FirestoreDocumentData } from "./types/firestore.types";
+import { FirestoreMapper } from "@/services/firestore/mapping";
+import { FirestoreParser } from "@/services/firestore/parser";
+import { PushfireClient, PushfireError } from "@/services/pushfire/client";
+import { FirestoreDocumentData } from "@/types/firestore.types";
+import { logger } from "@/utils/log/logger";
 import { onDocumentUpdated } from "firebase-functions/v2/firestore";
-import { FirestoreMapper } from "./services/firestore/mapping";
-import { FirestoreParser } from "./services/firestore/parser";
-import { PushfireClient, PushfireError } from "./services/pushfire/client";
-import { logger } from "./utils/log/logger";
 
 /**
  * Response structure returned by the Cloud Function.
