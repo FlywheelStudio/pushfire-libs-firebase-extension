@@ -7,9 +7,9 @@ import {
   FirestoreDocumentData,
   JsonbFieldMapping,
   SubscriberMappingConfiguration,
-} from "@/types/firestore.types";
-import { SubscriberUpdateRequest } from "@/types/pushfire.types";
-import { logger } from "@/utils/log/logger";
+} from "../../types/firestore.types";
+import { SubscriberUpdateRequest } from "../../types/pushfire.types";
+import { logger } from "../../utils/log/logger";
 
 /**
  * Service for mapping Firestore document data to Pushfire API format.
