@@ -29,13 +29,25 @@ export interface PushfireSuccessResponse {
 }
 
 /**
+ * Individual validation error from Pushfire API.
+ */
+export interface PushfireValidationError {
+  /** Field path where the error occurred */
+  path: string;
+  /** Error message describing the validation issue */
+  message: string;
+}
+
+/**
  * Error response from Pushfire API.
  */
 export interface PushfireErrorResponse {
   /** Error message describing what went wrong */
-  error: string;
+  error?: string;
   /** Optional additional error details */
   details?: string;
+  /** Array of validation errors (for 400 Bad Request responses) */
+  errors?: PushfireValidationError[];
 }
 
 /**
