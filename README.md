@@ -257,7 +257,7 @@ Subscriber data is mapped to PushFire's format:
 
 The extension communicates with:
 ```
-POST https://api.pushfire.app/functions/v1/subscribers/update-subscriber
+POST https://api.pushfire.app/functions/v1/update-subscriber
 ```
 
 ### Authentication
