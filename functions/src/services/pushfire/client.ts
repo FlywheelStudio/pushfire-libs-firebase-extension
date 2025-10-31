@@ -2,40 +2,50 @@
  * Pushfire API service for communicating with Pushfire Edge Functions
  */
 
-import { MappedSubscriberData } from "../../types/mapping.types";
 import {
   PushfireClientConfiguration,
   PushfireErrorResponse,
   PushfireSuccessResponse,
   SubscriberUpdateRequest,
-} from "../../types/pushfire.types";
+} from "@/types/pushfire.types";
 
 /**
- * Custom error class for Pushfire operations
+ * Custom error class for Pushfire API operations.
+ *
+ * Extends the standard Error class with an optional HTTP status code
+ * for better error handling and logging.
  */
 export class PushfireError extends Error {
-  constructor(
-    message: string,
-    public readonly statusCode?: number,
-    public readonly details?: string
-  ) {
+  /**
+   * Creates a new PushfireError instance.
+   *
+   * @param message - Human-readable error message
+   * @param statusCode - Optional HTTP status code from the API response
+   */
+  constructor(message: string, public readonly statusCode?: number) {
     super(message);
     this.name = "PushfireError";
   }
 }
 
 /**
- * Pushfire service for Edge Functions communication
+ * Pushfire client for communicating with Pushfire Edge Functions API.
+ *
+ * Handles subscriber synchronization, authentication, and error management.
  */
-export class Pushfire {
+export class PushfireClient {
   private readonly config: Required<PushfireClientConfiguration>;
 
   /**
-   * Create Pushfire instance from environment variables
-   * @throws {PushfireError} When required environment variables are missing
+   * Creates a new Pushfire client instance.
+   *
+   * Configuration can be provided explicitly or will be loaded from
+   * environment variables (PUSHFIRE_PROJECT_TOKEN).
+   *
+   * @param config - Optional client configuration
+   * @throws {PushfireError} When required configuration is missing
    */
   constructor(config?: PushfireClientConfiguration) {
-    // Use provided config or load from environment
     const baseUrl = config?.baseUrl || "https://api.pushfire.app/functions/v1";
     const apiKey = config?.apiKey || process.env.PUSHFIRE_PROJECT_TOKEN;
 
@@ -45,47 +55,28 @@ export class Pushfire {
       );
     }
 
-    // Ensure base URL doesn't end with slash
     const normalizedBaseUrl = baseUrl.replace(/\/$/, "");
 
     this.config = {
       baseUrl: normalizedBaseUrl,
       apiKey,
-      timeout: config?.timeout ?? 10000, // Default 10 seconds
+      timeout: config?.timeout ?? 10000,
     };
   }
 
   /**
-   * Build subscriber update payload
-   * @param subscriberId - The subscriber ID from Firestore
-   * @param mappedData - Mapped subscriber data
-   * @returns Request payload
-   */
-  private buildUpdatePayload(
-    mappedData: MappedSubscriberData
-  ): SubscriberUpdateRequest {
-    return {
-      data: {
-        externalId: mappedData.externalId,
-        name: mappedData.name,
-        email: mappedData.email,
-        phone: mappedData.phone,
-        metadata: mappedData.metadata,
-      },
-    };
-  }
-
-  /**
-   * Update subscriber via Pushfire API
-   * @param subscriberId - The subscriber ID from Firestore
-   * @param mappedData - Mapped subscriber data
-   * @returns Pushfire API success response
-   * @throws {PushfireError} When request fails
+   * Updates a subscriber in the Pushfire system via the API.
+   *
+   * Sends a PATCH request to the Pushfire API with the mapped subscriber data.
+   * Handles timeouts, network errors, and API errors gracefully.
+   *
+   * @param payload - Subscriber data wrapped in request format
+   * @returns API success response with confirmation message
+   * @throws {PushfireError} When the request fails (network, timeout, or API error)
    */
   async updateSubscriber(
-    mappedData: MappedSubscriberData
+    payload: SubscriberUpdateRequest
   ): Promise<PushfireSuccessResponse> {
-    const payload = this.buildUpdatePayload(mappedData);
     const endpoint = `${this.config.baseUrl}/api/v1/subscribers/update-subscriber`;
 
     try {
@@ -109,11 +100,10 @@ export class Pushfire {
 
       if (!response.ok) {
         const errorData = (await response.json()) as PushfireErrorResponse;
-        throw new PushfireError(
-          errorData.error || "Failed to update subscriber",
-          response.status,
-          errorData.details
-        );
+        const errorMessage = errorData.details
+          ? `${errorData.error}: ${errorData.details}`
+          : errorData.error || "Failed to update subscriber";
+        throw new PushfireError(errorMessage, response.status);
       }
 
       const data = (await response.json()) as PushfireSuccessResponse;
@@ -130,11 +120,7 @@ export class Pushfire {
             408
           );
         }
-        throw new PushfireError(
-          `Network error: ${error.message}`,
-          undefined,
-          error.message
-        );
+        throw new PushfireError(`Network error: ${error.message}`);
       }
 
       throw new PushfireError(
