@@ -10,7 +10,7 @@ import {
   RawFirestoreDocument,
   RawFirestoreEvent,
   RawFirestoreFieldValue,
-} from "../../types/firestore.types";
+} from "@/types/firestore.types";
 
 /**
  * Service for parsing raw Firestore documents to JavaScript objects.

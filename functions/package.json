@@ -8,8 +8,8 @@
   "scripts": {
     "lint": "eslint \"src/**/*\"",
     "lint:fix": "eslint \"src/**/*\" --fix",
-    "build": "tsc",
-    "build:watch": "tsc --watch",
+    "build": "tsc && tsc-alias",
+    "build:watch": "tsc --watch && tsc-alias --watch",
     "mocha": "mocha '**/*.spec.ts'",
     "test": "(cd integration-tests && firebase emulators:exec 'npm run mocha' -P demo-test)"
   },
@@ -30,6 +30,7 @@
     "eslint-plugin-import": "^2.26.0",
     "mocha": "^10.2.0",
     "ts-node": "^10.4.0",
+    "tsc-alias": "^1.8.16",
     "typescript": "^5.9.3"
   },
   "private": true,

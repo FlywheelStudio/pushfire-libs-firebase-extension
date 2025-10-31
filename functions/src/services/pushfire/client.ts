@@ -7,7 +7,7 @@ import {
   PushfireErrorResponse,
   PushfireSuccessResponse,
   SubscriberUpdateRequest,
-} from "../../types/pushfire.types";
+} from "@/types/pushfire.types";
 
 /**
  * Custom error class for Pushfire API operations.
