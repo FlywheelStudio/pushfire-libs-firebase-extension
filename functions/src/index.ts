@@ -5,7 +5,7 @@
  * subscriber data with Pushfire using configurable field mapping.
  */
 
-import { FirestoreDocumentData } from "@/types/firestore.types";
+import { FirestoreDocumentData } from "./types/firestore.types";
 import { onDocumentUpdated } from "firebase-functions/v2/firestore";
 import { FirestoreMapper } from "./services/firestore/mapping";
 import { FirestoreParser } from "./services/firestore/parser";
