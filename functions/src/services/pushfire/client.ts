@@ -77,7 +77,7 @@ export class PushfireClient {
   async updateSubscriber(
     payload: SubscriberUpdateRequest
   ): Promise<PushfireSuccessResponse> {
-    const endpoint = `${this.config.baseUrl}/subscribers/update-subscriber`;
+    const endpoint = `${this.config.baseUrl}/update-subscriber`;
 
     try {
       const controller = new AbortController();
