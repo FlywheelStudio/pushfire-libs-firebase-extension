@@ -3,7 +3,7 @@ version: 0.0.1
 specVersion: v1beta
 
 displayName: Pushfire Subscribers Sync
-description: Syncs subscribers from Pushfire to Firestore.
+description: Syncs subscribers from Firestore to Pushfire.
 
 icon: icon.png
 
@@ -12,12 +12,11 @@ author:
   url: https://pushfire.app
 
 contributors:
-  - authorName: Ender Puentes
-    email: ender@flywheel.so
-    url: https://github.com/enderpuentes
+  - authorName: Flywheel Studio
+    url: https://github.com/FlywheelStudio
 
 sourceUrl: https://github.com/FlywheelStudio/pushfire-libs-firebase-extension
-billingRequired: false
+billingRequired: true
 
 license: apache-2.0
 

@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Functions for the Pushfire Firebase Extension",
   "main": "lib/index.js",
-  "author": "Pushfire a product of Flywheel Studio, Ender Puentes <ender@flywheel.so>",
+  "author": "Pushfire, a product of Flywheel Studio",
   "license": "ISC",
   "scripts": {
     "lint": "eslint \"src/**/*\"",
