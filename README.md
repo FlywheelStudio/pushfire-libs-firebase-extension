@@ -55,22 +55,26 @@ During installation, you'll need to provide the following parameters:
 ### Required Parameters
 
 #### 1. PushFire Project ID
+
 - **Parameter**: `PUSHFIRE_PROJECT_ID`
 - **Description**: Your PushFire project identifier
-- **Where to find**: Available in your [PushFire Dashboard](https://pushfire.app/dashboard) under Project Settings
+- **Where to find**: Available in your [PushFire Dashboard](https://pushfire.app/dashboard) under Project Overview
 
 #### 2. PushFire Project Token
+
 - **Parameter**: `PUSHFIRE_PROJECT_TOKEN`
 - **Description**: API token for authenticating with PushFire
 - **Where to find**: Generate in your [PushFire Dashboard](https://pushfire.app/dashboard) under API Settings
 - **Security**: This token is stored securely and never exposed in logs
 
 #### 3. Firestore Collection Name
+
 - **Parameter**: `PUSHFIRE_MATCHING_COLLECTION`
 - **Description**: The name of your Firestore collection containing subscriber documents
 - **Example**: `users`, `subscribers`, `customers`
 
 #### 4. Field Mapping Configuration
+
 - **Parameter**: `PUSHFIRE_MATCHING_TOKEN_JSON_SCHEMA_CONFIGURATION`
 - **Description**: JSON configuration that maps your Firestore fields to PushFire fields
 - **Important**: Use the [Schema Builder](https://pushfire.app/extensions/firebase/schema-builder) to generate this configuration
@@ -98,11 +102,13 @@ The extension requires a JSON configuration that maps your Firestore document st
 The mapping configuration supports:
 
 #### Basic Fields
+
 - **Text fields**: String values with optional fallbacks
 - **Number fields**: Numeric values with optional fallbacks
 - **Boolean fields**: True/false values with optional fallbacks
 
 #### Advanced Fields
+
 - **Nested fields**: Access nested objects using dot notation (e.g., `profile.name`)
 - **Metadata fields**: Map multiple custom fields to PushFire metadata
 - **Arrays**: Support for array values in metadata
@@ -195,6 +201,7 @@ Or view logs in the [Firebase Console](https://console.firebase.google.com/) und
 ### Source Fields (Firestore)
 
 The extension can read and convert:
+
 - **Strings**: Text values
 - **Numbers**: Integers and decimals
 - **Booleans**: True/false values
@@ -206,6 +213,7 @@ The extension can read and convert:
 ### Target Fields (PushFire)
 
 Subscriber data is mapped to PushFire's format:
+
 - `external_id` (required): Unique identifier
 - `name` (required): Display name
 - `email` (required): Email address
@@ -219,6 +227,7 @@ Subscriber data is mapped to PushFire's format:
 **Problem**: Firestore updates don't trigger the extension
 
 **Solutions**:
+
 - Verify the collection name matches your configuration exactly
 - Check that you're updating documents (not creating or deleting)
 - Review Firebase Functions logs for errors
@@ -228,6 +237,7 @@ Subscriber data is mapped to PushFire's format:
 **Problem**: Data not mapping correctly
 
 **Solutions**:
+
 - Verify your JSON configuration is valid
 - Check field names match your Firestore structure
 - Use the Schema Builder to regenerate the configuration
@@ -238,6 +248,7 @@ Subscriber data is mapped to PushFire's format:
 **Problem**: "Pushfire API error: Unauthorized"
 
 **Solutions**:
+
 - Verify your Project Token is correct
 - Check that the token hasn't expired
 - Ensure the Project ID matches your PushFire project
@@ -247,6 +258,7 @@ Subscriber data is mapped to PushFire's format:
 **Problem**: "Request timeout after 10000ms"
 
 **Solutions**:
+
 - Check your network connectivity
 - Verify PushFire API is accessible from Firebase
 - Contact PushFire support if issues persist
@@ -256,6 +268,7 @@ Subscriber data is mapped to PushFire's format:
 ### Pushfire API Endpoint
 
 The extension communicates with:
+
 ```
 POST https://api.pushfire.app/functions/v1/update-subscriber
 ```
@@ -263,6 +276,7 @@ POST https://api.pushfire.app/functions/v1/update-subscriber
 ### Authentication
 
 Requests include:
+
 ```
 Authorization: Bearer YOUR_PROJECT_TOKEN
 ```
@@ -270,18 +284,21 @@ Authorization: Bearer YOUR_PROJECT_TOKEN
 ## Best Practices
 
 ### Security
+
 - ✅ Never commit your Project Token to version control
 - ✅ Use Firebase Secret Manager for sensitive data
 - ✅ Limit Firestore access rules appropriately
 - ✅ Regularly rotate your API tokens
 
 ### Performance
+
 - ✅ Use indexed fields for Firestore queries
 - ✅ Batch Firestore updates when possible
 - ✅ Monitor function execution times
 - ✅ Set appropriate retry policies
 
 ### Data Mapping
+
 - ✅ Use fallback values for optional fields
 - ✅ Validate data before Firestore updates
 - ✅ Keep metadata fields organized
@@ -299,6 +316,7 @@ Authorization: Bearer YOUR_PROJECT_TOKEN
 ### Setting Up Alerts
 
 Configure Firebase monitoring alerts for:
+
 - High error rates
 - Increased latency
 - Function failures
@@ -316,11 +334,13 @@ Typical costs are minimal for most applications. See [Firebase Pricing](https://
 ## Support
 
 ### Documentation
+
 - [PushFire Documentation](https://www.pushfire.app/docs)
 - [Firebase Extensions Guide](https://firebase.google.com/products/extensions)
 - [Schema Builder Tool](https://pushfire.app/extensions/firebase/schema-builder)
 
 ### Get Help
+
 - **Issues**: [GitHub Issues](https://github.com/FlywheelStudio/pushfire-libs-firebase-extension/issues)
 - **Website**: [pushfire.app](https://pushfire.app)
 - **Documentation**: [www.pushfire.app/docs](https://www.pushfire.app/docs)
