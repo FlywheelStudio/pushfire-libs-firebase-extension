@@ -123,13 +123,13 @@ export const updateSubscriber = onDocumentUpdated(
           message: error.message,
           statusCode: error.statusCode,
         });
-        
+
         // For 400 Bad Request, include more context in the response
         const errorMessage =
           error.statusCode === 400
             ? `Pushfire API validation error (400): ${error.message}`
             : `Pushfire API error (${error.statusCode}): ${error.message}`;
-        
+
         return {
           success: false,
           error: errorMessage,

@@ -7,6 +7,8 @@
  */
 export interface SubscriberUpdateRequest {
   data: {
+    /** Unique identifier for the subscriber in Pushfire */
+    id: string | null;
     /** Unique identifier for the subscriber in external system */
     externalId: string;
     /** Subscriber's full name */

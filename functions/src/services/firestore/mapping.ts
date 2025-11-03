@@ -58,14 +58,49 @@ export class FirestoreMapper {
   }
 
   /**
+   * Converts a value to the target type specified in the mapping configuration.
+   *
+   * @param value - The value to convert
+   * @param type - The target type from mapping configuration
+   * @returns The converted value
+   */
+  private convertToTargetType(value: unknown, type: "text" | "number" | "boolean"): unknown {
+    if (value === null || value === undefined) {
+      return value;
+    }
+
+    switch (type) {
+      case "text":
+        return String(value);
+      case "number":
+        if (typeof value === "number") {
+          return value;
+        }
+        const numValue = Number(value);
+        return isNaN(numValue) ? null : numValue;
+      case "boolean":
+        if (typeof value === "boolean") {
+          return value;
+        }
+        if (typeof value === "string") {
+          const lowerValue = value.toLowerCase().trim();
+          return lowerValue === "true" || lowerValue === "1" || lowerValue === "yes";
+        }
+        return Boolean(value);
+      default:
+        return value;
+    }
+  }
+
+  /**
    * Maps a single field based on its configuration.
    *
    * Handles different field types (text, number, boolean, jsonb) and applies
-   * fallback values when the source field is missing.
+   * type conversions and fallback values when the source field is missing.
    *
    * @param source - The source document data
    * @param mapping - Field mapping configuration
-   * @returns Mapped field value
+   * @returns Mapped field value with correct type
    */
   private mapField(
     source: FirestoreDocumentData,
@@ -81,7 +116,8 @@ export class FirestoreMapper {
       return "fallbackValue" in mapping ? mapping.fallbackValue : null;
     }
 
-    return value;
+    // Convert to target type based on mapping configuration
+    return this.convertToTargetType(value, mapping.type);
   }
 
   /**
@@ -97,6 +133,7 @@ export class FirestoreMapper {
     configuration: SubscriberMappingConfiguration
   ): SubscriberUpdateRequest["data"] {
     return {
+      id: null,
       externalId: this.mapField(
         documentData,
         configuration.externalId
