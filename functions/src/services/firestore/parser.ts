@@ -20,30 +20,39 @@ import {
  */
 export class FirestoreParser {
   /**
-   * Parses an individual Firestore field value to its native JavaScript type.
+   * Parses an individual Firestore field value from raw format to JavaScript.
+   *
+   * For primitive types (string, number, boolean), preserves the raw string representation
+   * to avoid redundant type conversions. The mapper will handle type conversion based on
+   * configuration. Complex types (objects, arrays, dates) are converted immediately since
+   * they require structural parsing.
    *
    * Supports: string, integer, double, boolean, timestamp, null, arrays, and maps.
    *
    * @param value - The raw Firestore field value
-   * @returns The converted JavaScript value
+   * @returns The converted JavaScript value (primitives as strings, complex types as structured data)
    */
   private parseValue(value: RawFirestoreFieldValue): unknown {
     if (value.stringValue !== undefined) {
       return value.stringValue;
     }
 
+    // Keep as string for mapper to handle type conversion based on configuration
     if (value.integerValue !== undefined) {
-      return parseInt(value.integerValue, 10);
+      return value.integerValue;
     }
 
+    // Keep as string for mapper to handle type conversion based on configuration
     if (value.doubleValue !== undefined) {
-      return parseFloat(value.doubleValue);
+      return value.doubleValue;
     }
 
+    // Keep as boolean - the mapper will convert to string if needed for text fields
     if (value.booleanValue !== undefined) {
       return value.booleanValue;
     }
 
+    // Timestamps must be Date objects for proper handling
     if (value.timestampValue !== undefined) {
       return new Date(value.timestampValue);
     }
@@ -52,6 +61,7 @@ export class FirestoreParser {
       return null;
     }
 
+    // Arrays and maps require structural parsing - convert recursively
     if (value.arrayValue !== undefined) {
       return value.arrayValue.values?.map((v) => this.parseValue(v)) || [];
     }
