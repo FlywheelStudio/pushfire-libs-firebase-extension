@@ -217,7 +217,7 @@ firebase ext:update pushfire-subscribers-sync
 **Monitor releases**:
 - Watch the [GitHub repository](https://github.com/FlywheelStudio/pushfire-libs-firebase-extension)
 - Subscribe to release notifications
-- Follow [@pushfire](https://twitter.com/pushfire) for announcements
+- Contact [hello@pushfire.app](mailto:hello@pushfire.app) for updates
 
 ## Vulnerability Disclosure Policy
 
