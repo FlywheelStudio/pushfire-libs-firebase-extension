@@ -32,7 +32,7 @@ resources:
       eventTrigger:
         eventType: providers/cloud.firestore/eventTypes/document.update
         resource: "projects/{PROJECT_ID}/databases/(default)/documents/${param:PUSHFIRE_MATCHING_COLLECTION}/{documentId}"
-      runtime: nodejs22
+      runtime: nodejs18
       source: functions
 
 params:
