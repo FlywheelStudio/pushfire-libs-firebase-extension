@@ -26,8 +26,8 @@ externalServices:
       - https://api.pushfire.app
 
 roles:
-  - role: firestore.stdout
-    reason: Allows the extension to read from Firestore.
+  - role: datastore.user
+    reason: Required to read and write Firestore documents for tracking changes
 
 resources:
   - name: updateSubscriber
