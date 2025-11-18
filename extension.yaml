@@ -20,6 +20,11 @@ billingRequired: true
 
 license: apache-2.0
 
+externalServices:
+  - name: Pushfire API
+    externalServices:
+      - https://api.pushfire.app
+
 roles:
   - role: firestore.stdout
     reason: Allows the extension to read from Firestore.
