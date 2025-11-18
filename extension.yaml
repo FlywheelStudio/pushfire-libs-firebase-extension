@@ -46,7 +46,7 @@ params:
   - param: PUSHFIRE_PROJECT_TOKEN
     label: Pushfire Project Token
     description: The API token for your Pushfire project.
-    type: string
+    type: secret
     required: true
     immutable: true
 
