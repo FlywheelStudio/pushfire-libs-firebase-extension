@@ -21,8 +21,8 @@ billingRequired: true
 license: apache-2.0
 
 externalServices:
-  - name: Pushfire API
-  - pricingUri: https://pushfire.app/#pricing
+  - name: Pushfire Pricing
+    pricingUri: https://pushfire.app/#pricing
 
 roles:
   - role: datastore.user
