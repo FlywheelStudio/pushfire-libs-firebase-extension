@@ -1,7 +1,7 @@
 {
   "name": "pushfire-firebase-extension",
   "description": "PushFire Firebase Extension",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "author": "PushFire, a product of Flywheel Studio. Ender Puentes <ender@flywheel.so>",
   "private": false,
   "keywords": [
