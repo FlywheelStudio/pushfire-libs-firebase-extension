@@ -1,11 +1,33 @@
 {
   "plugins": {
     "@release-it/bumper": {
-      "in": ["package.json", "functions/package.json"]
+      "in": ["package.json", "functions/package.json", "extension.yaml"]
     },
     "@release-it/conventional-changelog": {
-      "preset": "angular",
-      "infile": "CHANGELOG.md"
+      "preset": {
+        "name": "conventionalcommits",
+        "types": [
+          { "type": "feat", "section": "feature" },
+          { "type": "fix", "section": "fixed" },
+          { "type": "chore", "section": "chore" },
+          { "type": "test", "section": "test" },
+          { "type": "docs", "section": "docs" },
+          { "type": "style", "section": "style" },
+          { "type": "ci", "section": "ci" }
+        ]
+      },
+      "infile": "CHANGELOG.md",
+      "header": "# Changelog\n\n",
+      "writerOpts": {
+        "groupBy": "type",
+        "commitGroupsSort": "title",
+        "commitsSort": ["scope", "subject"],
+        "mainTemplate": "## Version {{version}}\n\n{{#each commitGroups}}{{#each commits}}{{type}} - {{subject}}{{#if references}} ({{#each references}}{{#if issue}}issue #{{issue}}{{/if}}{{/each}}){{/if}}.\n\n{{/each}}{{/each}}",
+        "transform": {
+          "type": "feat",
+          "subject": "{{subject}}"
+        }
+      }
     }
   },
   "hooks": {
