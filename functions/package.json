@@ -1,10 +1,18 @@
 {
   "name": "functions",
-  "version": "0.0.1",
   "description": "Functions for the Pushfire Firebase Extension",
-  "main": "lib/index.js",
-  "author": "Pushfire, a product of Flywheel Studio",
-  "license": "ISC",
+  "version": "0.0.1",
+  "author": "PushFire, a product of Flywheel Studio. Ender Puentes <ender@flywheel.so>",
+  "private": false,
+  "keywords": [
+    "pushfire",
+    "firebase",
+    "extension",
+    "sync",
+    "subscribers",
+    "firestore"
+  ],
+  "license": "Apache-2.0",
   "scripts": {
     "lint": "eslint \"src/**/*\"",
     "lint:fix": "eslint \"src/**/*\" --fix",
@@ -33,8 +41,8 @@
     "eslint-plugin-import": "^2.26.0",
     "mocha": "^10.2.0"
   },
-  "private": true,
   "engines": {
-    "node": "18"
-  }
+    "node": ">=18"
+  },
+  "main": "lib/index.js"
 }
