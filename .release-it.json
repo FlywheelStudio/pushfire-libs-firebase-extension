@@ -1,0 +1,30 @@
+{
+  "plugins": {
+    "@release-it/bumper": {
+      "in": ["package.json", "functions/package.json"]
+    },
+    "@release-it/conventional-changelog": {
+      "preset": "angular",
+      "infile": "CHANGELOG.md"
+    }
+  },
+  "hooks": {
+    "after:bump": "node scripts/update-version.js"
+  },
+  "npm": {
+    "publish": false
+  },
+  "git": {
+    "commit": true,
+    "commitMessage": "chore(release): ${version}",
+    "tag": true,
+    "tagName": "v${version}",
+    "tagAnnotation": "Release ${version}",
+    "push": true
+  },
+  "github": {
+    "release": true,
+    "releaseName": "${version}",
+    "tokenRef": "RELEASE_GIT"
+  }
+}
