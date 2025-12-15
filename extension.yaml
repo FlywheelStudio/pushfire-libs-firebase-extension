@@ -23,10 +23,8 @@ license: apache-2.0
 externalServices:
   - name: Pushfire Pricing
     pricingUri: https://pushfire.app/#pricing
-
-roles:
-  - role: datastore.user
-    reason: Required to read and write Firestore documents for tracking changes
+  - name: Update Subscriber
+    pricingUri: https://api.pushfire.app/functions/v1/update-subscriber
 
 resources:
   - name: updateSubscriber
