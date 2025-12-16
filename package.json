@@ -12,7 +12,7 @@
     "subscribers",
     "firestore"
   ],
-  "license": "ISC",
+  "license": "Apache-2.0",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "commitlint": "commitlint --edit ${1} --config ./commitlint.config.json",
