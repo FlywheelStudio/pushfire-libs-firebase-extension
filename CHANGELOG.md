@@ -2,6 +2,10 @@
 
 
 
+## Version 0.1.2
+
+chore - change license from ISC to Apache-2.0 in package.json.
+
 ## Version 0.1.1
 
 fix - update external services in extension.yaml by replacing Firestore role with new Update Subscriber service configuration.
