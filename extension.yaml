@@ -20,6 +20,12 @@ billingRequired: true
 
 license: apache-2.0
 
+apis:
+  - apiName: firestore.googleapis.com
+
+roles:
+  - role: datastore.user
+
 externalServices:
   - name: Pushfire Pricing
     pricingUri: https://pushfire.app/#pricing
