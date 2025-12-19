@@ -2,6 +2,10 @@
 
 
 
+## Version 0.1.3
+
+fix - add Firestore API and datastore user role to extension.yaml.
+
 ## Version 0.1.2
 
 chore - change license from ISC to Apache-2.0 in package.json.
