@@ -22,9 +22,11 @@ license: apache-2.0
 
 apis:
   - apiName: firestore.googleapis.com
+    reason: Required to listen to and read Firestore document update events from the subscriber collection to sync data with Pushfire.
 
 roles:
   - role: datastore.user
+    reason: Required to read Firestore document data when update events are triggered, enabling the extension to extract and map subscriber information for synchronization.
 
 externalServices:
   - name: Pushfire Pricing
