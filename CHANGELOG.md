@@ -2,6 +2,10 @@
 
 
 
+## Version 0.2.0
+
+feat - add reasons for Firestore API and datastore user role in extension.yaml to clarify their purpose for data sync.
+
 ## Version 0.1.3
 
 fix - add Firestore API and datastore user role to extension.yaml.
