@@ -1,1 +1,3 @@
 node_modules/
+# Local integration-test secrets
+functions/integration-tests/extensions/*.env
